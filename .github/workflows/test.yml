@@ -22,7 +22,7 @@ jobs:
     - name: Install Go
       uses: actions/setup-go@v2
       with:
-        go: ${{ matrix.go-version }}
+        go-version: ${{ matrix.go-version }}
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Test
@@ -33,4 +33,3 @@ jobs:
       if: ${{ matrix.os == 'ubuntu-latest' }}
       with:
         path-to-profile: profile.cov
-        flag-name: go@${{ matrix.go-version }} ${{ matrix.os }}
