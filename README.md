@@ -32,7 +32,7 @@ One neat use-case:
 
 This section shows a few basic examples that'll give you a sneak peak of how simple it is to work
 with JWIT. For more in-depth examples (such as working with private claims, loading keys from PEM,
-…), please head to [the godoc page](https://godoc.org/github.com/gilbsgilbs/jwit).
+…), please head to [the godoc page](https://pkg.go.dev/github.com/gilbsgilbs/jwit).
 
 ### Create a signed JWT
 
@@ -60,7 +60,7 @@ verifier, err := jwit.NewVerifier(
         Name: "myVeryOwnIssuer",
 
         // This is an HTTP(S) URL where the authorization server publishes its public keys.
-        // It will be queried the first time a JWK is verified and then periodically.
+        // It will be queried the first time a JWT is verified and then periodically.
         JWKSURL: "https://my-very-own-issuer.com/.well-known/jwks.json",
 
         // You can specify how long the issuer's public keys should be kept in cache.
@@ -116,5 +116,5 @@ you.
 Note that JWIT is **not** another JWT/JWKS implementation by any mean. JWIT relies on
 [go-jose](https://github.com/square/go-jose), a popular JWx implementation by Square. On top of
 that, go-jose and Go's stdlib are the only dependencies to this library. This greatly reduces the
-attack surface of JWIT itself. If you found a security vulnerability in go-jose , plese refer to
+attack surface of JWIT. If you found a security vulnerability in go-jose , plese refer to
 [their bug bounty program](https://github.com/square/go-jose/blob/master/BUG-BOUNTY.md).

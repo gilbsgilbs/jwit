@@ -69,7 +69,7 @@ func Example_verifyJWT() {
 			Name: "myVeryOwnIssuer",
 
 			// This is an HTTP(S) URL where the authorization server publishes its public keys.
-			// It will be queried the first time a JWK is verified and then periodically.
+			// It will be queried the first time a JWT is verified and then periodically.
 			JWKSURL: "https://my-very-own-issuer.com/.well-known/jwks.json",
 
 			// You can specify how long the issuer's public keys should be kept in cache.
