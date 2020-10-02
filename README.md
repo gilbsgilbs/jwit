@@ -58,35 +58,29 @@ fmt.Println(rawJWT)
 ```go
 // 1. Create a verifier
 verifier, err := jwit.NewVerifier(
-    // Recommended: specify an URL to the issuer's public JWKS.
-    //              this will allow JWIT to catch changes to the JWKS.
+    // Specify an URL to the issuer's public JWKS.
     &jwit.Issuer{
         // This should correspond to the "iss" claims of the JWTs
         Name: "myVeryOwnIssuer",
 
         // This is an HTTP(S) URL where the authorization server publishes its public keys.
         // It will be queried the first time a JWT is verified and then periodically.
+        // If this URL is let empty, remote JWKS are disabled.
         JWKSURL: "https://my-very-own-issuer.com/.well-known/jwks.json",
 
         // You can specify how long the issuer's public keys should be kept in cache.
         // Passed that delay, the JWKS will be re-fetched once asynchronously.
         // Defaults to 24 hours.
         TTL: 10 * time.Hour,
-    },
-    // Alternatively: pass in public keys directly.
-    &jwit.Issuer{
-        Name: "myOtherIssuer",
+
+        // Alternatively, you can specify a set of public keys directly:
         PublicKeys: []interface{}{
-            // using Go's crypto types
-            rsaPublicKey,
-            ecdsaPublicKey,
-            // or using a marshalled JWKS JSON
-            []byte(`{"keys": [ … your JWKS … ]}`),
-            // or using marshalled PEM blocks
-            []byte(`-----BEGIN RSA PUBLIC KEY----- ... -----END RSA PUBLIC KEY-----`),
+            rsaPublicKey, ecdsaPublicKey,
+            []byte(`--- BEGIN RSA PUBLIC KEY --- ...`),
+            []byte(`{"keys":[ ... JWKS ... ]}`),
         },
     },
-    // ... you can specify as many issuer as you want
+    // ... you can specify as many issuers as you want
 )
 
 // 2. Verify the JWT using its "iss" claim.

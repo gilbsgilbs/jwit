@@ -77,7 +77,7 @@ func Example_verifyJWT() {
 			// Defaults to 24 hours.
 			TTL: 10 * time.Hour,
 		},
-		// Alternatively: pass in public keys directly.
+		// Alternatively: pass in public keys directly and disable remote JWKS.
 		&jwit.Issuer{
 			Name: "myOtherIssuer",
 			PublicKeys: []interface{}{
@@ -90,7 +90,7 @@ func Example_verifyJWT() {
 				[]byte(`-----BEGIN RSA PUBLIC KEY----- ... -----END RSA PUBLIC KEY-----`),
 			},
 		},
-		// ... you can specify as many issuer as you want
+		// ... you can specify as many issuers as you want
 	)
 
 	// You typically get this from a Cookie or Authorization header.
