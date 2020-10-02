@@ -1,0 +1,14 @@
+
+{
+    "keys": [
+        {
+            "kid": "public_ec_key",
+            "kty": "EC",
+            "use": "sig",
+            "crv": "P-256",
+            "x": "DJS-r48jmYG8iGk9uSOsDGtg2-3sLpvFFlhQYH1ka0k",
+            "y": "rmPJUSHgES_GJVcsx8rJmMy6E5CTImYLQGi_T_2_lps",
+            "alg": "ES256"
+        }
+    ]
+}
