@@ -85,6 +85,9 @@ verifier, err := jwit.NewVerifier(
 
 // 2. Verify the JWT using its "iss" claim.
 isValid, err := verifier.VerifyJWT(rawJWT)
+
+// Alternatively, if your JWT doesn't have an "iss" claim, you can also pass public keys explicitely.
+isValid, err := verifier.VerifyJWTWithKeys(rawJWT, []crypto.PublicKey{ecdsaPublicKey, rsaPublicKey})
 ```
 
 ### Expose the public JWKS
@@ -95,9 +98,6 @@ http.HandleFunc(
     func (w http.ResponseWriter, req *http.Request) {
         // Just get the public JWKS from the signer.
         jwks, err := signer.DumpPublicJWKS()
-        if err != nil {
-            panic(err)
-        }
 
         // And write it to the response body
         w.Write(jwks)
