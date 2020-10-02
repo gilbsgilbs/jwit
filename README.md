@@ -99,7 +99,7 @@ http.HandleFunc(
         // Just get the public JWKS from the signer.
         jwks, err := signer.DumpPublicJWKS()
 
-        // And write it to the response body
+        // And write it to the response body.
         w.Write(jwks)
     },
 )
