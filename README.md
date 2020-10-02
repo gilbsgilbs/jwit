@@ -1,3 +1,8 @@
+[![License Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Godoc](https://godoc.org/github.com/gilbsgilbs/jwit?status.svg)](https://pkg.go.dev/github.com/gilbsgilbs/jwit)
+[![Actions Status](https://github.com/gilbsgilbs/jwit/workflows/Test/badge.svg)](https://github.com/gilbsgilbs/jwit/actions)
+[![Coverage Status](https://coveralls.io/repos/github/gilbsgilbs/jwit/badge.svg?branch=master)](https://coveralls.io/github/gilbsgilbs/jwit?branch=master)
+
 # JWIT
 
 JWIT is a tiny Go library built around [go-jose](https://github.com/square/go-jose) that brings
