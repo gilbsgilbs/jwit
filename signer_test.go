@@ -222,7 +222,7 @@ func TestSigner(t *testing.T) {
 		}
 
 		parts := strings.Split(rawJWT, ".")
-		payload, err := base64.StdEncoding.DecodeString(parts[1])
+		payload, err := base64.RawStdEncoding.DecodeString(parts[1])
 		if err != nil {
 			t.Error("unexpected error", err)
 		}
