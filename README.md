@@ -115,5 +115,5 @@ you.
 Note that JWIT is **not** another JWT/JWKS implementation by any mean. JWIT relies on
 [go-jose](https://github.com/square/go-jose), a popular JWx implementation by Square. On top of
 that, go-jose and Go's stdlib are the only dependencies to this library. This greatly reduces the
-attack surface of JWIT. If you found a security vulnerability in go-jose , plese refer to
+attack surface of JWIT. If you found a security vulnerability in go-jose, please refer to
 [their bug bounty program](https://github.com/square/go-jose/blob/master/BUG-BOUNTY.md).
