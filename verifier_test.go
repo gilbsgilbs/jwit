@@ -20,58 +20,58 @@ import (
 	"gopkg.in/square/go-jose.v2/jwt"
 )
 
-func generateECDSAKey() *ecdsa.PrivateKey {
+func generateECDSAKey(t *testing.T) *ecdsa.PrivateKey {
 	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	return privateKey
 }
 
 func TestVerifier(t *testing.T) {
 	// create a signer with two signing keys
-	issuer0Sk0 := generateECDSAKey()
-	issuer0Sk1 := generateECDSAKey()
+	issuer0Sk0 := generateECDSAKey(t)
+	issuer0Sk1 := generateECDSAKey(t)
 	signer0, err := jwit.NewSignerFromCryptoKeys([]crypto.PrivateKey{issuer0Sk0, issuer0Sk1})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	// create a signer with one signing key
-	issuer1Sk0 := generateECDSAKey()
+	issuer1Sk0 := generateECDSAKey(t)
 	signer1, err := jwit.NewSignerFromCryptoKeys([]crypto.PrivateKey{issuer1Sk0})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	// create a signer that uses a KID
-	issuerKIDSk0 := generateECDSAKey()
+	issuerKIDSk0 := generateECDSAKey(t)
 	issuerKIDJWK := jose.JSONWebKey{
 		Key:   issuerKIDSk0,
 		KeyID: "myKey123",
 	}
 	issuerKIDJWKS, err := json.Marshal(jose.JSONWebKeySet{Keys: []jose.JSONWebKey{issuerKIDJWK}})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	signerKID, err := jwit.NewSignerFromJWKS(issuerKIDJWKS)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	// create an issuer with local keys.
-	issuerLocalSk0 := generateECDSAKey()
+	issuerLocalSk0 := generateECDSAKey(t)
 	issuerLocalSk1, err := ioutil.ReadFile(path.Join(".testdata/jwks.json"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	issuerLocalSk2, err := ioutil.ReadFile(path.Join(".testdata/private.pem"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 	signerLocal, err := jwit.NewSignerFromCryptoKeys([]crypto.PrivateKey{issuerLocalSk0})
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	callback := func() {}
@@ -83,19 +83,19 @@ func TestVerifier(t *testing.T) {
 			callback()
 			jwks, err := signer0.DumpPublicJWKS()
 			if err != nil {
-				panic(err)
+				t.Fatal(err)
 			}
 			_, _ = w.Write(jwks)
 		case "/iss1.json":
 			jwks, err := signer1.DumpPublicJWKS()
 			if err != nil {
-				panic(err)
+				t.Fatal(err)
 			}
 			_, _ = w.Write(jwks)
 		case "/kid.json":
 			jwks, err := signerKID.DumpPublicJWKS()
 			if err != nil {
-				panic(err)
+				t.Fatal(err)
 			}
 			_, _ = w.Write(jwks)
 		case "/302":
@@ -103,7 +103,7 @@ func TestVerifier(t *testing.T) {
 		case "/notjson":
 			_, err := w.Write([]byte("{not json}"))
 			if err != nil {
-				panic(err)
+				t.Fatal(err)
 			}
 		}
 	}))
@@ -137,7 +137,7 @@ func TestVerifier(t *testing.T) {
 			CustomClaims{Payload: "the payload"},
 		)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		var out CustomClaims
@@ -159,7 +159,7 @@ func TestVerifier(t *testing.T) {
 			jwit.C{Issuer: "iss1"},
 		)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -174,7 +174,7 @@ func TestVerifier(t *testing.T) {
 	t.Run("test verify JWT with unknown issuer", func(t *testing.T) {
 		rawJWT, err := signer0.SignJWT(jwit.C{Issuer: "unknown issuer"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -189,7 +189,7 @@ func TestVerifier(t *testing.T) {
 	t.Run("test verify JWT with redirection", func(t *testing.T) {
 		rawJWT, err := signer0.SignJWT(jwit.C{Issuer: "issRedirect"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -219,7 +219,7 @@ func TestVerifier(t *testing.T) {
 			},
 		)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -241,7 +241,7 @@ func TestVerifier(t *testing.T) {
 			CustomClaims{Issuer: map[string]string{}},
 		)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -266,7 +266,7 @@ func TestVerifier(t *testing.T) {
 			CustomClaims{Payload: "abc"},
 		)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		var customClaimsIncompatible CustomClaimsIncompatible
@@ -282,7 +282,7 @@ func TestVerifier(t *testing.T) {
 	t.Run("test verify a JWT with KID", func(t *testing.T) {
 		rawJWT, err := signerKID.SignJWT(jwit.C{Issuer: "issKID"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -299,7 +299,7 @@ func TestVerifier(t *testing.T) {
 	t.Run("test local issuer", func(t *testing.T) {
 		rawJWT, err := signerLocal.SignJWT(jwit.C{Issuer: "issLocal"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isValid, err := verifier.VerifyJWT(rawJWT)
@@ -323,7 +323,7 @@ func TestVerifier(t *testing.T) {
 			CustomClaims{Payload: "the payload"},
 		)
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		var out CustomClaims
@@ -372,13 +372,13 @@ func TestVerifier(t *testing.T) {
 
 		rawJWT, err := signer0.SignJWT(jwit.C{Issuer: "iss0"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		for i := 0; i < 10; i++ {
 			_, err = verifier.VerifyJWT(rawJWT)
 			if err != nil {
-				panic(err)
+				t.Fatal(err)
 			}
 		}
 		if nbCalls != 1 {
@@ -401,13 +401,13 @@ func TestVerifier(t *testing.T) {
 
 		rawJWT, err := signer0.SignJWT(jwit.C{Issuer: "iss0"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		for i := 0; i < 2; i++ {
 			_, err = verifier.VerifyJWT(rawJWT)
 			if err != nil {
-				panic(err)
+				t.Fatal(err)
 			}
 			time.Sleep(10 * time.Millisecond)
 		}
@@ -421,7 +421,7 @@ func TestVerifier(t *testing.T) {
 	t.Run("test non-json response in JWKS route", func(t *testing.T) {
 		rawJWT, err := signer0.SignJWT(jwit.C{Issuer: "issNotJSON"})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		isVerified, err := verifier.VerifyJWT(rawJWT)
@@ -450,7 +450,6 @@ func TestVerifier(t *testing.T) {
 				if err == nil {
 					t.Error("expected an error ")
 				}
-
 			})
 		}
 	})

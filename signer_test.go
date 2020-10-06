@@ -20,22 +20,22 @@ import (
 func TestSigner(t *testing.T) {
 	jwksData, err := ioutil.ReadFile(path.Join(".testdata", "jwks.json"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	pksData, err := ioutil.ReadFile(path.Join(".testdata", "pks.json"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	publicPEMData, err := ioutil.ReadFile(path.Join(".testdata", "public.pem"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	privatePEMData, err := ioutil.ReadFile(path.Join(".testdata", "private.pem"))
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	t.Run("test dump JWKS", func(t *testing.T) {
@@ -100,7 +100,7 @@ func TestSigner(t *testing.T) {
 			PublicKeys: []interface{}{privatePEMData},
 		})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		rawJWT, err := signer.SignJWT(jwit.C{Issuer: "iss"})
@@ -140,7 +140,7 @@ func TestSigner(t *testing.T) {
 			PublicKeys: []interface{}{pk0},
 		})
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		rawJWT, err := signer.SignJWT(jwit.C{Issuer: "iss"})
@@ -190,7 +190,7 @@ func TestSigner(t *testing.T) {
 	t.Run("create signer with bad PEM", func(t *testing.T) {
 		invalidPEMData, err := ioutil.ReadFile(path.Join(".testdata", "invalid.pem"))
 		if err != nil {
-			panic(err)
+			t.Fatal(err)
 		}
 
 		signer, err := jwit.NewSignerFromPEM(invalidPEMData)
