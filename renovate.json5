@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "group:all",
+    "schedule:weekly",
+    ":preserveSemverRanges",
+    ":maintainLockFilesWeekly",
+  ],
+  "postUpdateOptions": [
+    "gomodUpdateImportPaths",
+    "gomodTidy",
+  ]
+}
