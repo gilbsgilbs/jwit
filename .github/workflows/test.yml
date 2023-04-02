@@ -6,7 +6,7 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v2
 
@@ -22,7 +22,7 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Test
       # Quotes for "-coverprofile=cover.out" are required for Windows because of the "." in the argument name.
       run: go test -v -covermode=atomic "-coverprofile=profile.cov" ./...
