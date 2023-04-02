@@ -4,7 +4,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 
-	"gopkg.in/square/go-jose.v2"
+	"github.com/go-jose/go-jose/v3"
 )
 
 // pemToJWKS converts raw PEM-encoded data to a JWKS.

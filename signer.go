@@ -10,9 +10,8 @@ import (
 	"math/big"
 	"time"
 
-	"gopkg.in/square/go-jose.v2/jwt"
-
-	"gopkg.in/square/go-jose.v2"
+	"github.com/go-jose/go-jose/v3"
+	"github.com/go-jose/go-jose/v3/jwt"
 )
 
 // Signer will help you sign your JWTs and expose your public JWKS.

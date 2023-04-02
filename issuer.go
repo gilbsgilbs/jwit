@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"gopkg.in/square/go-jose.v2"
+	"github.com/go-jose/go-jose/v3"
 )
 
 // Issuer is a third-party that publishes a set of public keys.
