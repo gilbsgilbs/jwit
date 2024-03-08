@@ -3,7 +3,7 @@ package jwit
 import (
 	"encoding/json"
 
-	"github.com/go-jose/go-jose/v3"
+	"github.com/go-jose/go-jose/v4"
 )
 
 // loadJWKS loads the provided bytes into a go-jose JSON Web Key Set.
